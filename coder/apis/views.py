@@ -22,7 +22,7 @@ class UserView(APIView):
         if(serializer.is_valid()):
             try:
                 serializer.save()
-                return Response({'data':serializer.data},status=status.HTTP_200_OK)
+                return Response({'data':serializer.data},status=status.HTTP_201_CREATED)
             except:
                 return Response({'data':{"user":{"non_field_errors":"User already exists."}}},status=status.HTTP_400_BAD_REQUEST)    
         else:
@@ -56,7 +56,7 @@ class IOUView(APIView):
         # s.clean()
         if(s.is_valid()):
             s.save()
-            return Response({'data':s.data},status=status.HTTP_200_OK)
+            return Response({'data':s.data},status=status.HTTP_201_CREATED)
         else:
             return Response({'data':s.errors},status=status.HTTP_400_BAD_REQUEST)
 
@@ -68,8 +68,7 @@ class SettleUpView(APIView):
             result = User.objects.filter(user__in=request.data['users']).order_by('user')
                 
             serializers = UserSerializer(data=result, many=True)
-            if serializers.is_valid():
-                print("success")
+            serializers.is_valid()
             data_list = []
             for i in serializers.data:
                 data_list.append(dict(i))

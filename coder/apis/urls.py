@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import *
 urlpatterns = [
-    path('user/', UserView.as_view()),
+    path('user/', UserView.as_view(),name='url_user'),
     path('iou/', IOUView.as_view()),
     path('settleup/', SettleUpView.as_view()),
 ]
