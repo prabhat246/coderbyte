@@ -11,6 +11,7 @@ class UserView(APIView):
     def get(self,request,*args,**kwargs):
         result = User.objects.all()
         serializers = UserSerializer(data=result, many=True)
+        serializers.is_valid()
         data_list = []
         for i in serializers.data:
             data_list.append(dict(i))
@@ -55,3 +56,28 @@ class IOUView(APIView):
             return Response({'data':s.data},status=status.HTTP_200_OK)
         else:
             return Response({'data':s.errors},status=status.HTTP_400_BAD_REQUEST)
+
+
+class SettleUpView(APIView):
+    def get(self,request,*args,**kwargs):
+        if request.data:
+            
+            result = User.objects.filter(user__in=request.data['users']).order_by('user')
+                
+            serializers = UserSerializer(data=result, many=True)
+            if serializers.is_valid():
+                print("success")
+            data_list = []
+            for i in serializers.data:
+                data_list.append(dict(i))
+            return Response({'users':data_list},status=status.HTTP_200_OK)
+
+        else:
+            result = User.objects.all()
+            serializers = UserSerializer(data=result, many=True)
+            serializers.is_valid()
+            data_list = []
+            for i in serializers.data:
+                data_list.append(dict(i))
+            return Response({'users':data_list},status=status.HTTP_200_OK)
+

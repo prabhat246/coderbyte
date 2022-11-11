@@ -19,5 +19,5 @@ from .views import *
 urlpatterns = [
     path('user/', UserView.as_view()),
     path('iou/', IOUView.as_view()),
-    
+    path('settleup/', SettleUpView.as_view()),
 ]
