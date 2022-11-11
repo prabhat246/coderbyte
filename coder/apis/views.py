@@ -20,8 +20,11 @@ class UserView(APIView):
     def post(self,request):
         serializer=UserSerializer(data=request.data)
         if(serializer.is_valid()):
-            serializer.save()
-            return Response({'data':serializer.data},status=status.HTTP_200_OK)
+            try:
+                serializer.save()
+                return Response({'data':serializer.data},status=status.HTTP_200_OK)
+            except:
+                return Response({'data':{"user":{"non_field_errors":"User already exists."}}},status=status.HTTP_400_BAD_REQUEST)    
         else:
             return Response({'data':serializer.errors},status=status.HTTP_400_BAD_REQUEST)
 

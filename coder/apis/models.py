@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import Sum
 
 class User(models.Model):
-    user = models.CharField(max_length=100)
+    user = models.CharField(unique=True,max_length=100)
     @property
     def owes_calc(self):
         data = IOU.objects.filter(lender=self)
